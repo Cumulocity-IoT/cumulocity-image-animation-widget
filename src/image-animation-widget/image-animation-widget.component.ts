@@ -275,7 +275,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
     this.realtimeEventsSubscription = this.realtime.subscribe(`/events/${this.config.device.id}`, (event: ICumulocityEvent) => {
       
       // SCROLL-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'SCROLL-TOGGLE'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
         && ( this.config.animationAction === 'SCROLL UP' ||
              this.config.animationAction === 'SCROLL DOWN' ||
              this.config.animationAction === 'SCROLL LEFT' ||
@@ -286,7 +286,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // SCROLL-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'SCROLL-START'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
         && ( this.config.animationAction === 'SCROLL UP' ||
             this.config.animationAction === 'SCROLL DOWN' ||
             this.config.animationAction === 'SCROLL LEFT' ||
@@ -296,7 +296,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
     
       // SCROLL-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'SCROLL-END'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
         && ( this.config.animationAction === 'SCROLL UP' ||
              this.config.animationAction === 'SCROLL DOWN' ||
              this.config.animationAction === 'SCROLL LEFT' ||
@@ -306,7 +306,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // FADE-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'FADE-TOGGLE'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
         && ( this.config.animationAction === 'FADE OUT' ||
              this.config.animationAction === 'FADE IN') ) {
           const toggle = !this.animationConfig.fade.toggle;
@@ -315,7 +315,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // FADE-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'FADE-START'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
         && ( this.config.animationAction === 'FADE OUT' ||
              this.config.animationAction === 'FADE IN') ) {
           this.resetAnimationConfig();
@@ -323,7 +323,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // FADE-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'FADE-END'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
         && ( this.config.animationAction === 'FADE OUT' ||
              this.config.animationAction === 'FADE IN') ) {
           this.resetAnimationConfig();
@@ -331,7 +331,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // ROTATE-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'ROTATE-TOGGLE'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
         && ( this.config.animationAction === 'ROTATE') ) {
           const toggle = !this.animationConfig.rotate.toggle;
           this.resetAnimationConfig();
@@ -339,21 +339,21 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // ROTATE-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'ROTATE-START'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
         && ( this.config.animationAction === 'ROTATE') ) {
           this.resetAnimationConfig();
           this.animationConfig.rotate.start = true;
       }
 
       // ROTATE-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'ROTATE-END'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
         && ( this.config.animationAction === 'ROTATE') ) {
         this.resetAnimationConfig();
         this.animationConfig.rotate.end = true;
       }
     
       // SWAP-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'SWAP-TOGGLE'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
         && ( this.config.animationAction === 'SWAP') ) {
           const toggle = !this.animationConfig.swap.toggle;
           this.resetAnimationConfig();
@@ -361,7 +361,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // SWAP-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'SWAP-START'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
         && ( this.config.animationAction === 'SWAP') ) {
           if (this.currentSwapImage === 'imageText2') {
             this.resetAnimationConfig();
@@ -370,7 +370,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       }
 
       // SWAP-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'SWAP-END'
+      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
         && ( this.config.animationAction === 'SWAP') ) {
           if (this.currentSwapImage === 'imageText') {
             this.resetAnimationConfig();

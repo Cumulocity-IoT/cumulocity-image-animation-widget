@@ -99,10 +99,10 @@ Enter the width (in pixels) for your images e.g. 500
 Enter the amount of seconds the animation should take to complete e.g. 2. If you want the image to swap immediately, set this value to 0
 
 
-## Scrolling the widget using Cumulocity events
+## Animating the widget using Cumulocity events
 
-### SCROLL-TOGGLE
-If you have selected 'Scroll up', 'Scroll down', 'Scroll left', or 'Scroll right', you will be able to scroll the image by posting an authenticated Cumulocity SCROLL-TOGGLE event to your tenant.
+### TOGGLE
+If you have configured your widget, you will now be able to animate it by posting an authenticated Cumulocity TOGGLE event to your tenant.
 
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
@@ -111,7 +111,7 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     
       type: "AnimationAction"
     
-      text: "SCROLL-TOGGLE"
+      text: "TOGGLE"
     
       time: [the current datetime]
     }
@@ -123,18 +123,17 @@ POST:
     {
         "source": { "id": "31435268" },
         "type":"AnimationAction",
-        "text": "SCROLL-TOGGLE",
-        "time": "2020-13-12T09:16:22.598+02:00"
+        "text": "TOGGLE",
+        "time": "2020-10-29T09:16:22.598+02:00"
     }
 
-The 'AnimationAction' (text = 'SCROLL-TOGGLE') Cumulocity event works as a toggle to animate the image according to the image animation configuration attributes.
+The 'AnimationAction' (text = 'TOGGLE') Cumulocity event toggles the image according to the image animation configuration attributes.
 
-To manually toggle between the SCROLL-START and SCROLL-END, you can post an authenticated Cumulocity event to your tenant. Set the "text" attribute to either "SCROLL-START" or "SCROLL-END"
+### MANUAL ANIMATION
 
+To manually toggle, you can post an authenticated Cumulocity event to your tenant. Set the "text" attribute to either "START" or "END"
 
-### FADE-TOGGLE
-If you have selected 'Fade out' or 'Fade in', you will be able to fade the image by posting an authenticated Cumulocity FADE-TOGGLE event to your tenant.
-
+#### START 
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
     {  
@@ -142,7 +141,7 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     
       type: "AnimationAction"
     
-      text: "FADE-TOGGLE"
+      text: "START"
     
       time: [the current datetime]
     }
@@ -154,17 +153,11 @@ POST:
     {
         "source": { "id": "31435268" },
         "type":"AnimationAction",
-        "text": "FADE-TOGGLE",
-        "time": "2020-13-12T09:16:22.598+02:00"
+        "text": "START",
+        "time": "2020-10-29T09:16:25.598+02:00"
     }
 
-The 'AnimationAction' (text = 'FADE-TOGGLE') Cumulocity event works as a toggle to animate the image according to the image animation configuration attributes.
-
-To manually toggle between the FADE-START and FADE-END, you can post an authenticated Cumulocity event to your tenant. Set the "text" attribute to either "FADE-START" or "FADE-END"
-
-### ROTATE-TOGGLE
-If you have selected 'Rotate', you will be able to rotate the image by posting an authenticated Cumulocity FADE-TOGGLE event to your tenant.
-
+#### END
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
     {  
@@ -172,7 +165,7 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     
       type: "AnimationAction"
     
-      text: "ROTATE-TOGGLE"
+      text: "END"
     
       time: [the current datetime]
     }
@@ -184,43 +177,10 @@ POST:
     {
         "source": { "id": "31435268" },
         "type":"AnimationAction",
-        "text": "ROTATE-TOGGLE",
-        "time": "2020-13-12T09:16:22.598+02:00"
+        "text": "END",
+        "time": "2020-10-29T09:16:26.598+02:00"
     }
 
-The 'AnimationAction' (text = 'ROTATE-TOGGLE') Cumulocity event works as a toggle to animate the image according to the image animation configuration attributes.
-
-To manually toggle between the ROTATE-START and ROTATE-END, you can post an authenticated Cumulocity event to your tenant. Set the "text" attribute to either "ROTATE-START" or "ROTATE-END"
-
-### SWAP-TOGGLE
-If you have selected 'Swap', you will be able to swap the images by posting an authenticated Cumulocity SWAP-TOGGLE event to your tenant.
-
-In the 'body' of your Cumulocity event, you will need to include the following: 
-
-    {  
-      source: The body should include the targeted device Id 
-    
-      type: "AnimationAction"
-    
-      text: "SWAP-TOGGLE"
-    
-      time: [the current datetime]
-    }
-
-e.g. 
-
-POST:
-
-    {
-        "source": { "id": "31435268" },
-        "type":"AnimationAction",
-        "text": "SWAP-TOGGLE",
-        "time": "2020-13-12T09:16:22.598+02:00"
-    }
-
-The 'AnimationAction' (text = 'SWAP-TOGGLE') Cumulocity event works as a toggle to animate the image according to the image animation configuration attributes.
-
-To manually toggle between the SWAP-START and SWAP-END, you can post an authenticated Cumulocity event to your tenant. Set the "text" attribute to either "SWAP-START" or "SWAP-END"
 
 ### RESET
 At any time a 'RESET' Cumulocity event can be sent which will immediately position the image back to the original start position.
@@ -247,7 +207,7 @@ POST:
         "source": { "id": "31435268" },
         "type":"AnimationAction",
         "text": "RESET",
-        "time": "2020-13-12T09:16:25.598+02:00"
+        "time": "2020-10-29T09:27:25.598+02:00"
     }
 
     }
@@ -289,7 +249,7 @@ In the 'body' of your Cumulocity event, you will need to include the following:
 
         AnimationAction: "SCROLL UP", "SCROLL DOWN", "SCROLL LEFT", "SCROLL RIGHT", "FADE OUT", "FADE IN", "ROTATE", "SWAP"
         
-        "time": "2020-10-12T09:16:22.598+02:00"
+        "time": "2020-10-29T09:16:30.598+02:00"
       }
 
 **IMPORTANT**: in the text attribute, you will need to escape the double quotes with '\' characters to ensure that it is read in as stringified JSON. *This is shown in the example below.*
@@ -304,7 +264,7 @@ POST:
         "source": { "id": "32536261" },
         "type": "AnimationConfiguration",
         "text": "{\"imageFile\":\"data:image/jpeg;base64,/9j/4AAQSkZJRg...\",\"height\":300,\"width\":500,\"remainingImagePercentage\":5,\"animationTimeInSeconds\":5,\"animationAction\":\"SCROLL LEFT\"}",
-        "time": "2020-13-08T17:16:27.598+02:00"
+        "time": "2020-10-29T09:28:38.598+02:00"
     }
 
 As detailed above, the text attribute does not need to include all the configuration information. For example, to only change the animationAction and animationTimeInSeconds, you can send in those specific updates.
@@ -317,15 +277,20 @@ POST:
         "source": { "id": "32536261" },
         "type": "AnimationConfiguration",
         "text": "{\"AnimationAction\":\"SCROLL UP\",\"animationTimeInSeconds\":10}",
-        "time": "2020-13-08T17:16:29.598+02:00"
+        "time": "2020-10-29T10:02:22.598+02:00"
     }
 
 *  When the 'AnimationConfiguration' Cumulocity event is posted to your tenant, this will immediately update the configuration for your image. 
 
 *  When the 'AnimationAction' Cumulocity event is posted to your tenant, this will cause the image to scroll using your updated attributes.
 
-### Configuration Samples
-A POSTMAN collection of sample configurations has been included in the /configuration-samples folder. Please import this into [https://www.postman.com/](https://www.postman.com/) and amend Basic Auth to include your username and password.
+### AnimationAction & Real-time configuration samples
+A POSTMAN collection of AnimationAction and realtime configuration samples has been included in the /configuration-samples folder. Please import this into [https://www.postman.com/](https://www.postman.com/)
+
+1. Ensure that the Image Animation Widget has been installed into your tenant and added to your dashboard
+2. Amend the Basic Auth to include your username and password
+3. Replace 'industrysolutions.cumulocity.com' in the url to your tenant 
+4. Run the TOGGLE event (in the AnimationAction folder) to see your widget animate in your tenant
 
 ------------------------------
 
