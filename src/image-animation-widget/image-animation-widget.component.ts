@@ -3,7 +3,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { WidgetConfig } from './i-widget-config';
 import { ICumulocityEvent } from './i-cumulocity-event'
 import _ from 'lodash';
-import { Realtime } from '@c8y/ngx-components/api';
+import { Realtime, EventService } from '@c8y/ngx-components/api';
 import { AnimationConfig } from './i-animation-config';
 
 const isBase64 = require('is-base64');
@@ -265,213 +265,247 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
   private currentSwapImage = 'imageText';
   public currentSwapImageText = '';
 
-  constructor(private realtime: Realtime) {
+  constructor(
+    private realtime: Realtime,
+    private eventService: EventService) {
     this.resetAnimationConfig();
   }
 
   public ngOnInit(): void {
 
-    // Listen for 'AnimationAction' and 'AnimationConfiguration' events
-    this.realtimeEventsSubscription = this.realtime.subscribe(`/events/${this.config.device.id}`, (event: ICumulocityEvent) => {
-      
-      // SCROLL-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
-        && ( this.config.animationAction === 'SCROLL UP' ||
-             this.config.animationAction === 'SCROLL DOWN' ||
-             this.config.animationAction === 'SCROLL LEFT' ||
-             this.config.animationAction === 'SCROLL RIGHT') ) {
-        const toggle = !this.animationConfig.scroll.toggle;
-        this.resetAnimationConfig();
-        this.animationConfig.scroll.toggle = toggle;
-      }
+    // set the initial state
+    this.setWidgetInitialState();
 
-      // SCROLL-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
-        && ( this.config.animationAction === 'SCROLL UP' ||
+    // Listen for 'AnimationAction' and 'AnimationConfiguration' events
+    this.realtimeEventsSubscription = this.realtime
+        .subscribe(`/events/${this.config.device.id}`, (event: ICumulocityEvent) => {
+            this.processEvent(event.data.data.type, event.data.data.text);
+    });
+  }
+
+  private processEvent(type: string, text: string) {
+    // SCROLL TOGGLE
+    if (type === 'AnimationAction' && text === 'TOGGLE'
+      && ( this.config.animationAction === 'SCROLL UP' ||
+            this.config.animationAction === 'SCROLL DOWN' ||
+            this.config.animationAction === 'SCROLL LEFT' ||
+            this.config.animationAction === 'SCROLL RIGHT') ) {
+      const toggle = !this.animationConfig.scroll.toggle;
+      this.resetAnimationConfig();
+      this.animationConfig.scroll.toggle = toggle;
+    }
+
+    // SCROLL START
+    if (type === 'AnimationAction' && text === 'START'
+      && ( this.config.animationAction === 'SCROLL UP' ||
+          this.config.animationAction === 'SCROLL DOWN' ||
+          this.config.animationAction === 'SCROLL LEFT' ||
+          this.config.animationAction === 'SCROLL RIGHT') ) {
+      this.resetAnimationConfig();
+      this.animationConfig.scroll.start = true;
+    }
+  
+    // SCROLL END
+    if (type === 'AnimationAction' && text === 'END'
+      && ( this.config.animationAction === 'SCROLL UP' ||
             this.config.animationAction === 'SCROLL DOWN' ||
             this.config.animationAction === 'SCROLL LEFT' ||
             this.config.animationAction === 'SCROLL RIGHT') ) {
         this.resetAnimationConfig();
-        this.animationConfig.scroll.start = true;
-      }
-    
-      // SCROLL-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
-        && ( this.config.animationAction === 'SCROLL UP' ||
-             this.config.animationAction === 'SCROLL DOWN' ||
-             this.config.animationAction === 'SCROLL LEFT' ||
-             this.config.animationAction === 'SCROLL RIGHT') ) {
-          this.resetAnimationConfig();
-          this.animationConfig.scroll.end = true;
-      }
+        this.animationConfig.scroll.end = true;
+    }
 
-      // FADE-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
-        && ( this.config.animationAction === 'FADE OUT' ||
-             this.config.animationAction === 'FADE IN') ) {
-          const toggle = !this.animationConfig.fade.toggle;
-          this.resetAnimationConfig();
-          this.animationConfig.fade.toggle = toggle;
-      }
-
-      // FADE-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
-        && ( this.config.animationAction === 'FADE OUT' ||
-             this.config.animationAction === 'FADE IN') ) {
-          this.resetAnimationConfig();
-          this.animationConfig.fade.start = true;
-      }
-
-      // FADE-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
-        && ( this.config.animationAction === 'FADE OUT' ||
-             this.config.animationAction === 'FADE IN') ) {
-          this.resetAnimationConfig();
-          this.animationConfig.fade.end = true;
-      }
-
-      // ROTATE-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
-        && ( this.config.animationAction === 'ROTATE') ) {
-          const toggle = !this.animationConfig.rotate.toggle;
-          this.resetAnimationConfig();
-          this.animationConfig.rotate.toggle = toggle;
-      }
-
-      // ROTATE-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
-        && ( this.config.animationAction === 'ROTATE') ) {
-          this.resetAnimationConfig();
-          this.animationConfig.rotate.start = true;
-      }
-
-      // ROTATE-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
-        && ( this.config.animationAction === 'ROTATE') ) {
+    // FADE TOGGLE
+    if (type === 'AnimationAction' && text === 'TOGGLE'
+      && ( this.config.animationAction === 'FADE OUT' ||
+            this.config.animationAction === 'FADE IN') ) {
+        const toggle = !this.animationConfig.fade.toggle;
         this.resetAnimationConfig();
-        this.animationConfig.rotate.end = true;
-      }
-    
-      // SWAP-TOGGLE
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'TOGGLE'
-        && ( this.config.animationAction === 'SWAP') ) {
-          const toggle = !this.animationConfig.swap.toggle;
+        this.animationConfig.fade.toggle = toggle;
+    }
+
+    // FADE START
+    if (type === 'AnimationAction' && text === 'START'
+      && ( this.config.animationAction === 'FADE OUT' ||
+            this.config.animationAction === 'FADE IN') ) {
+        this.resetAnimationConfig();
+        this.animationConfig.fade.start = true;
+    }
+
+    // FADE END
+    if (type === 'AnimationAction' && text === 'END'
+      && ( this.config.animationAction === 'FADE OUT' ||
+            this.config.animationAction === 'FADE IN') ) {
+        this.resetAnimationConfig();
+        this.animationConfig.fade.end = true;
+    }
+
+    // ROTATE TOGGLE
+    if (type === 'AnimationAction' && text === 'TOGGLE'
+      && ( this.config.animationAction === 'ROTATE') ) {
+        const toggle = !this.animationConfig.rotate.toggle;
+        this.resetAnimationConfig();
+        this.animationConfig.rotate.toggle = toggle;
+    }
+
+    // ROTATE START
+    if (type === 'AnimationAction' && text === 'START'
+      && ( this.config.animationAction === 'ROTATE') ) {
+        this.resetAnimationConfig();
+        this.animationConfig.rotate.start = true;
+    }
+
+    // ROTATE END
+    if (type === 'AnimationAction' && text === 'END'
+      && ( this.config.animationAction === 'ROTATE') ) {
+      this.resetAnimationConfig();
+      this.animationConfig.rotate.end = true;
+    }
+  
+    // SWAP TOGGLE
+    if (type === 'AnimationAction' && text === 'TOGGLE'
+      && ( this.config.animationAction === 'SWAP') ) {
+        const toggle = !this.animationConfig.swap.toggle;
+        this.resetAnimationConfig();
+        this.animationConfig.swap.toggle = toggle;
+    }
+
+    // SWAP START
+    if (type === 'AnimationAction' && text === 'START'
+      && ( this.config.animationAction === 'SWAP') ) {
+        if (this.currentSwapImage === 'imageText2') {
           this.resetAnimationConfig();
-          this.animationConfig.swap.toggle = toggle;
-      }
+          this.animationConfig.swap.end = true;
+        }
+    }
 
-      // SWAP-START
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'START'
-        && ( this.config.animationAction === 'SWAP') ) {
-          if (this.currentSwapImage === 'imageText2') {
-            this.resetAnimationConfig();
-            this.animationConfig.swap.end = true;
-          }
-      }
-
-      // SWAP-END
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'END'
-        && ( this.config.animationAction === 'SWAP') ) {
-          if (this.currentSwapImage === 'imageText') {
-            this.resetAnimationConfig();
-            this.animationConfig.swap.end = true;
-          }
-      }
-
-      // RESET
-      if (event.data.data.type === 'AnimationAction' && event.data.data.text === 'RESET') {
-          // Reset
+    // SWAP END
+    if (type === 'AnimationAction' && text === 'END'
+      && ( this.config.animationAction === 'SWAP') ) {
+        if (this.currentSwapImage === 'imageText') {
           this.resetAnimationConfig();
-          this.animationConfig.reset = true;
-      }
+          this.animationConfig.swap.end = true;
+        }
+    }
 
-      // ANIMATION CONFIGURATION
-      if (event.data.data.type === 'AnimationConfiguration') {
-        try {
-          const newConfigurationData: Partial<WidgetConfig> = JSON.parse(event.data.data.text);
+    // RESET
+    if (type === 'AnimationAction' && text === 'RESET') {
+        // Reset
+        this.resetAnimationConfig();
+        this.animationConfig.reset = true;
+    }
 
-          if ('imageText' in newConfigurationData) {
-            if (isBase64(newConfigurationData.imageText, {mimeRequired: true})) {
-              this.config.imageText = newConfigurationData.imageText;
+    // ANIMATION CONFIGURATION
+    if (type === 'AnimationConfiguration') {
+      try {
+        const newConfigurationData: Partial<WidgetConfig> = JSON.parse(text);
+
+        if ('imageText' in newConfigurationData) {
+          if (isBase64(newConfigurationData.imageText, {mimeRequired: true})) {
+            this.config.imageText = newConfigurationData.imageText;
+          } else {
+            console.error('The image file supplied in the configuration is not a valid base64 encoded image.')
+          }
+        }
+
+        if (newConfigurationData.animationAction === 'SWAP') {
+          if ('imageText2' in newConfigurationData) {
+            if (isBase64(newConfigurationData.imageText2, {mimeRequired: true})) {
+              this.config.imageText2 = newConfigurationData.imageText2;
             } else {
               console.error('The image file supplied in the configuration is not a valid base64 encoded image.')
             }
           }
-
-          if (newConfigurationData.animationAction === 'SWAP') {
-            if ('imageText2' in newConfigurationData) {
-              if (isBase64(newConfigurationData.imageText2, {mimeRequired: true})) {
-                this.config.imageText2 = newConfigurationData.imageText2;
-              } else {
-                console.error('The image file supplied in the configuration is not a valid base64 encoded image.')
-              }
-            }
-          }
-
-          if ('height' in newConfigurationData){
-            if (newConfigurationData.height >= 0) {
-              this.config.height = newConfigurationData.height;
-            } else {
-              console.error(`config.height must be supplied as a number greater than or equal to 0 e.g. '300'`);
-            }
-          }
-
-          if ('width' in newConfigurationData) {
-            if (newConfigurationData.width >= 0) {
-              this.config.width = newConfigurationData.width;
-            } else {
-              console.error(`config.width must be supplied as a number greater than or equal to 0 e.g. '500'`);
-            }
-          }
-
-          if (newConfigurationData.animationAction !== 'ROTATE' && newConfigurationData.animationAction !== 'SWAP') {
-            if ('remainingImagePercentage' in newConfigurationData) {
-              if (newConfigurationData.remainingImagePercentage >= 0 && newConfigurationData.remainingImagePercentage <= 100) {
-                this.config.remainingImagePercentage = newConfigurationData.remainingImagePercentage;
-              } else {
-                console.error(`config.remainingImagePercentage must be a number between 0 and 100`);
-              }
-            }
-          }
-
-          if (newConfigurationData.animationAction === 'ROTATE') {
-            if (newConfigurationData.rotationInDegrees >= -360 && newConfigurationData.rotationInDegrees <= 360) {
-              this.config.rotationInDegrees = newConfigurationData.rotationInDegrees;
-            } else {
-              console.error(`config.rotationInDegrees must be a number between -360 and 360`);
-            }
-          }
-
-          if ('animationTimeInSeconds' in newConfigurationData) {
-            if (newConfigurationData.animationTimeInSeconds >= 0) {
-              this.config.animationTimeInSeconds = newConfigurationData.animationTimeInSeconds;
-            } else {
-              console.error(`config.animationTimeInSeconds must be supplied as a number greater than or equal to 0 e.g. 2`);
-            }
-          }
-
-          if ('animationAction' in newConfigurationData) {
-            if (newConfigurationData.animationAction === 'SCROLL UP' ||
-                  newConfigurationData.animationAction === 'SCROLL DOWN' ||
-                  newConfigurationData.animationAction === 'SCROLL LEFT' ||
-                  newConfigurationData.animationAction === 'SCROLL RIGHT' ||
-                  newConfigurationData.animationAction === 'FADE OUT' ||
-                  newConfigurationData.animationAction === 'FADE IN' ||
-                  newConfigurationData.animationAction === 'ROTATE' ||
-                  newConfigurationData.animationAction === 'SWAP') {
-              this.config.animationAction = newConfigurationData.animationAction;
-            } else {
-              console.error(`config.animationAction must be either 'SCROLL UP', 'SCROLL DOWN', 'SCROLL LEFT', 'SCROLL RIGHT', 'FADE OUT', 'FADE IN', 'ROTATE', 'SWAP'`);
-            }
-          }
-          // Reset
-          this.resetAnimationConfig();
-          this.animationConfig.reset = true;
-        } catch (e) {
-          console.error('Unable to parse configuration data:', e);
         }
+
+        if ('height' in newConfigurationData){
+          if (newConfigurationData.height >= 0) {
+            this.config.height = newConfigurationData.height;
+          } else {
+            console.error(`config.height must be supplied as a number greater than or equal to 0 e.g. '300'`);
+          }
+        }
+
+        if ('width' in newConfigurationData) {
+          if (newConfigurationData.width >= 0) {
+            this.config.width = newConfigurationData.width;
+          } else {
+            console.error(`config.width must be supplied as a number greater than or equal to 0 e.g. '500'`);
+          }
+        }
+
+        if (newConfigurationData.animationAction !== 'ROTATE' && newConfigurationData.animationAction !== 'SWAP') {
+          if ('remainingImagePercentage' in newConfigurationData) {
+            if (newConfigurationData.remainingImagePercentage >= 0 && newConfigurationData.remainingImagePercentage <= 100) {
+              this.config.remainingImagePercentage = newConfigurationData.remainingImagePercentage;
+            } else {
+              console.error(`config.remainingImagePercentage must be a number between 0 and 100`);
+            }
+          }
+        }
+
+        if (newConfigurationData.animationAction === 'ROTATE') {
+          if (newConfigurationData.rotationInDegrees >= -360 && newConfigurationData.rotationInDegrees <= 360) {
+            this.config.rotationInDegrees = newConfigurationData.rotationInDegrees;
+          } else {
+            console.error(`config.rotationInDegrees must be a number between -360 and 360`);
+          }
+        }
+
+        if ('animationTimeInSeconds' in newConfigurationData) {
+          if (newConfigurationData.animationTimeInSeconds >= 0) {
+            this.config.animationTimeInSeconds = newConfigurationData.animationTimeInSeconds;
+          } else {
+            console.error(`config.animationTimeInSeconds must be supplied as a number greater than or equal to 0 e.g. 2`);
+          }
+        }
+
+        if ('animationAction' in newConfigurationData) {
+          if (newConfigurationData.animationAction === 'SCROLL UP' ||
+                newConfigurationData.animationAction === 'SCROLL DOWN' ||
+                newConfigurationData.animationAction === 'SCROLL LEFT' ||
+                newConfigurationData.animationAction === 'SCROLL RIGHT' ||
+                newConfigurationData.animationAction === 'FADE OUT' ||
+                newConfigurationData.animationAction === 'FADE IN' ||
+                newConfigurationData.animationAction === 'ROTATE' ||
+                newConfigurationData.animationAction === 'SWAP') {
+            this.config.animationAction = newConfigurationData.animationAction;
+          } else {
+            console.error(`config.animationAction must be either 'SCROLL UP', 'SCROLL DOWN', 'SCROLL LEFT', 'SCROLL RIGHT', 'FADE OUT', 'FADE IN', 'ROTATE', 'SWAP'`);
+          }
+        }
+        // Reset
+        this.resetAnimationConfig();
+        this.animationConfig.reset = true;
+      } catch (e) {
+        console.error('Unable to parse configuration data:', e);
       }
-    });
+    }
+  }
+
+  private async setWidgetInitialState() {
+
+    // Get the events ordered by creation date DESC
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 0);
+    const dateTo = endOfToday.toISOString();
+    
+    const getEventsResponse: any = await this.eventService.list( {
+        source: this.config.device.id,
+        dateTo,
+        revert: false,
+        pageSize: 100
+      }
+    );
+
+    // Get the most recent 'AnimationAction' 'START' | 'END' event
+    if (getEventsResponse && getEventsResponse.data && getEventsResponse.data.length > 0) {
+      const filteredEventsList = getEventsResponse.data.filter( e => e.type === 'AnimationAction' && e.text === 'START' || e.text === 'END');
+      if (filteredEventsList.length > 0) {
+        const latestEvent = filteredEventsList[0];
+        this.processEvent(latestEvent.type, latestEvent.text);
+      }
+    }
   }
 
   public ngDoCheck() {
