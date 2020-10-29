@@ -102,7 +102,10 @@ Enter the amount of seconds the animation should take to complete e.g. 2. If you
 ## Animating the widget using Cumulocity events
 
 ### TOGGLE
-If you have configured your widget, you will now be able to animate it by posting an authenticated Cumulocity TOGGLE event to your tenant.
+If you have configured your widget, you will now be able to animate it by posting a (Basic Auth) authenticated Cumulocity TOGGLE event to your tenant.
+
+#### *Cumulocity event*
+https://\<**your cumulocity tenant url**\>/event/events
 
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
@@ -117,6 +120,9 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     }
 
 e.g. 
+
+#### *Cumulocity event*
+https://industrysolutions.cumulocity.com/event/events
 
 POST:
 
@@ -136,6 +142,9 @@ To manually toggle, you can post an authenticated Cumulocity event to your tenan
 #### START 
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
+#### *Cumulocity event*
+https://\<**your cumulocity tenant url**\>/event/events
+	
     {  
       source: The body should include the targeted device Id 
     
@@ -147,6 +156,9 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     }
 
 e.g. 
+
+#### *Cumulocity event*
+https://industrysolutions.cumulocity.com/event/events
 
 POST:
 
@@ -160,6 +172,9 @@ POST:
 #### END
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
+#### *Cumulocity event*
+https://\<**your cumulocity tenant url**\>/event/events
+
     {  
       source: The body should include the targeted device Id 
     
@@ -171,6 +186,9 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     }
 
 e.g. 
+
+#### *Cumulocity event*
+https://industrysolutions.cumulocity.com/event/events
 
 POST:
 
@@ -189,6 +207,10 @@ To reset the image, POST an authenticated Cumulocity event to your tenant.
 
 In the 'body' of your Cumulocity event, you will need to include the following: 
 
+#### *Cumulocity event*
+
+https://\<**your cumulocity tenant url**\>/event/events
+
     {  
        source: The body should include the targeted device Id 
      
@@ -200,6 +222,9 @@ In the 'body' of your Cumulocity event, you will need to include the following:
     }
 
 e.g. 
+
+#### *Cumulocity event*
+https://industrysolutions.cumulocity.com/event/events
 
 POST:
 
@@ -225,6 +250,8 @@ To configure the widget, POST an authenticated Cumulocity event to your tenant
 In the 'body' of your Cumulocity event, you will need to include the following:
 (Note : in the text attribute, you do not need to include all the attributes)
 
+#### *Cumulocity event*
+https://\<**your cumulocity tenant url**\>/event/events
 
     {
       source: The body should include the targeted device Id 
@@ -258,6 +285,9 @@ In the 'body' of your Cumulocity event, you will need to include the following:
 
 e.g.
 
+#### *Cumulocity event*
+https://industrysolutions.cumulocity.com/event/events
+
 POST:
 
     {
@@ -270,6 +300,9 @@ POST:
 As detailed above, the text attribute does not need to include all the configuration information. For example, to only change the animationAction and animationTimeInSeconds, you can send in those specific updates.
 
 e.g.
+
+#### *Cumulocity event*
+https://industrysolutions.cumulocity.com/event/events
 
 POST:
 
