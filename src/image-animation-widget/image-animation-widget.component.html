@@ -1,0 +1,69 @@
+<div *ngIf="config" class="image-outer-container">
+  <div class="image-container">
+      <ng-container *ngIf="config.animationAction === 'SCROLL UP'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@scrollUp]="{value: config.animationAction === 'SCROLL UP' ? animationConfig.reset ? 'scrollUpReset' : 
+            animationConfig.scroll.start ? 'scrollUpStart' : animationConfig.scroll.end ? 'scrollUpEnd' : 
+            animationConfig.scroll.toggle ? 'scrollUpEnd' : 'scrollUpStart' : '',
+            params: { calculatedRemainingImage: calculatedRemainingImage, animationTimeInSeconds: config.animationTimeInSeconds }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'SCROLL DOWN'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@scrollDown]="{value: config.animationAction === 'SCROLL DOWN' ? animationConfig.reset ? 'scrollDownReset' :
+            animationConfig.scroll.start ? 'scrollDownStart' : animationConfig.scroll.end ? 'scrollDownEnd' : 
+            animationConfig.scroll.toggle ? 'scrollDownEnd' : 'scrollDownStart' : '',
+            params: { calculatedRemainingImage: calculatedRemainingImage, animationTimeInSeconds: config.animationTimeInSeconds }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'SCROLL LEFT'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@scrollLeft]="{value: config.animationAction === 'SCROLL LEFT' ? animationConfig.reset ? 'scrollLeftReset' :
+            animationConfig.scroll.start ? 'scrollLeftStart' : animationConfig.scroll.end ? 'scrollLeftEnd' : 
+            animationConfig.scroll.toggle ? 'scrollLeftEnd' : 'scrollLeftStart' : '',
+            params: { calculatedRemainingImage: calculatedRemainingImage, animationTimeInSeconds: config.animationTimeInSeconds }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'SCROLL RIGHT'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@scrollRight]="{value: config.animationAction === 'SCROLL RIGHT' ? animationConfig.reset ? 'scrollRightReset' :
+            animationConfig.scroll.start ? 'scrollRightStart' : animationConfig.scroll.end ? 'scrollRightEnd' : 
+            animationConfig.scroll.toggle ? 'scrollRightEnd' : 'scrollRightStart' : '',
+            params: { calculatedRemainingImage: calculatedRemainingImage, animationTimeInSeconds: config.animationTimeInSeconds }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'FADE OUT'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@fadeOut]="{value: config.animationAction === 'FADE OUT' ? animationConfig.reset ? 'fadeOutReset' :
+            animationConfig.fade.start ? 'fadeOutStart' : animationConfig.fade.end ? 'fadeOutEnd' : 
+            animationConfig.fade.toggle ? 'fadeOutEnd' : 'fadeOutStart' : '',
+            params: { calculatedRemainingImage: calculatedRemainingImage, animationTimeInSeconds: config.animationTimeInSeconds }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'FADE IN'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@fadeIn]="{value: config.animationAction === 'FADE IN' ? animationConfig.reset ? 'fadeInReset' :
+            animationConfig.fade.start ? 'fadeInStart' : animationConfig.fade.end ? 'fadeInEnd' : 
+            animationConfig.fade.toggle ? 'fadeInEnd' : 'fadeInStart' : '',
+            params: { calculatedRemainingImage: calculatedRemainingImage, animationTimeInSeconds: config.animationTimeInSeconds }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'ROTATE'">
+        <img [src]="getImage()" [ngStyle]="{'height.px': config.height, 'width.px': config.width}"
+            [@rotate]="{value: config.animationAction === 'ROTATE' ? animationConfig.reset ? 'rotateReset' :
+            animationConfig.rotate.start ? 'rotateStart' : animationConfig.rotate.end ? 'rotateEnd' : 
+            animationConfig.rotate.toggle ? 'rotateEnd' : 'rotateStart' : '',
+            params: {animationTimeInSeconds: config.animationTimeInSeconds, rotationInDegrees: config.rotationInDegrees }}">
+      </ng-container>
+
+      <ng-container *ngIf="config.animationAction === 'SWAP'">
+        <img [src]="currentSwapImageText" [ngStyle]="{'height.px': config.height, 'width.px': config.width}" 
+            (@swap.done)="onSwapFadeOutComplete($event)"
+            [@swap]="{value: config.animationAction === 'SWAP' ? animationConfig.reset ? 'swapReset' :
+            animationConfig.swap.start ? 'swapStart' : animationConfig.swap.end ? 'swapEnd' : 
+            animationConfig.swap.toggle ? 'swapEnd' : 'swapStart' : '',
+            params: {animationTimeInSeconds: config.animationTimeInSeconds}}">
+      </ng-container>
+
+  </div>
+</div>

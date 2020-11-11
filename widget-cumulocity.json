@@ -1,0 +1,13 @@
+{
+  "name": "Image animation",
+  "contextPath": "image-animation-widget",
+  "key": "image-animation-widget-application-key",
+  "contentSecurityPolicy": "default-src 'self'",
+  "description": "Animates an image: scroll up, scroll down, scroll left, scroll right, fade out, fade in, rotate, swap",
+  "icon": {
+    "class": "fa fw fa-arrows"
+  },
+  "manifest": {
+    "noAppSwitcher": true
+  }
+}

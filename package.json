@@ -1,0 +1,82 @@
+{
+  "name": "image-animation-widget",
+  "interleave": {
+    "dist\\bundle-src\\custom-widget.js": "image-animation-widget-CustomWidget",
+    "dist/bundle-src/custom-widget.js": "image-animation-widget-CustomWidget"
+  },
+  "version": "1.0.0",
+  "description": "Image animation widget to scroll an image Up, Down, Left or Right, Fade in, Fade out, Rotate and Swap (written by Software AG Global Presales)",
+  "main": "index.js",
+  "scripts": {
+    "start": "c8ycli server",
+    "build": "c8ycli build",
+    "deploy": "c8ycli deploy"
+  },
+  "keywords": [],
+  "author": "Nigel Milham - Software AG, Global Presales",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "@angular/animations": "8.2.13",
+    "@angular/cdk": "8.2.3",
+    "@angular/common": "8.2.13",
+    "@angular/compiler": "8.2.13",
+    "@angular/core": "8.2.13",
+    "@angular/forms": "8.2.13",
+    "@angular/http": "7.2.15",
+    "@angular/platform-browser": "8.2.13",
+    "@angular/platform-browser-dynamic": "8.2.13",
+    "@angular/router": "8.2.13",
+    "@angular/upgrade": "8.2.13",
+    "@c8y/ng1-modules": "1006.6.13",
+    "@c8y/ngx-components": "1006.6.13",
+    "@c8y/style": "1006.6.13",
+    "angular": "1.6.9",
+    "chart.js": "2.9.3",
+    "is-base64": "^1.1.0",
+    "core-js": "3.4.0",
+    "lodash": "4.17.20",
+    "rxjs": "6.4.0",
+    "url-search-params-polyfill": "6.0.0",
+    "zone.js": "0.9.1"
+  },
+  "peerDependencies": {
+    "@angular/common": "8.2.13",
+    "@angular/core": "8.2.13",
+    "@angular/forms": "8.2.13",
+    "@angular/http": "7.2.15",
+    "@angular/router": "8.2.13",
+    "@c8y/ngx-components": "1006.6.13"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "0.803.17",
+    "@angular/compiler-cli": "8.2.13",
+    "@angular/language-service": "8.2.13",
+    "@c8y/cli": "1006.6.13",
+    "css-loader": "3.5.3",
+    "gulp": "4.0.2",
+    "gulp-filter": "6.0.0",
+    "gulp-replace": "1.0.0",
+    "gulp-zip": "5.0.2",
+    "ng-packagr": "9.1.1",
+    "typescript": "3.5.3",
+    "url-loader": "4.1.1",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.11",
+    "webpack-external-import": "^2.2.3"
+  },
+  "c8y": {
+    "application": {
+      "name": "cockpit",
+      "contextPath": "cockpit",
+      "key": "cockpit-application-key",
+      "tabsHorizontal": true,
+      "upgrade": true,
+      "rightDrawer": true,
+      "breadcrumbs": false,
+      "sensorAppOneLink": "http://onelink.to/pca6qe",
+      "sensorPhone": true,
+      "contentSecurityPolicy": "base-uri 'none'; default-src 'self' 'unsafe-inline' http: https: ws: wss:; connect-src 'self' *.billwerk.com http: https: ws: wss:;  script-src 'self' open.mapquestapi.com *.twitter.com *.twimg.com 'unsafe-inline' 'unsafe-eval' data:; style-src * 'unsafe-inline' blob:; img-src * data:; font-src * data:; frame-src *;"
+    },
+    "cli": {}
+  }
+}
