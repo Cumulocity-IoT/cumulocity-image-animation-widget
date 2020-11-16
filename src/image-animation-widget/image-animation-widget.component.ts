@@ -282,6 +282,10 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
   private currentSwapImage = 'imageText';
   public currentSwapImageText = '';
 
+  public animationDescription = '';
+
+
+
   constructor(
     private realtime: Realtime,
     private eventService: EventService) {
@@ -310,6 +314,11 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       const toggle = !this.animationConfig.scroll.toggle;
       this.resetAnimationConfig();
       this.animationConfig.scroll.toggle = toggle;
+      if (this.animationConfig.scroll.toggle === true) {
+        this.animationDescription = this.config.shortDescriptionOffToOn;
+      } else {
+        this.animationDescription = this.config.shortDescriptionOnToOff;
+      }
     }
 
     // SCROLL START
@@ -319,6 +328,9 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
           this.config.animationAction === 'SCROLL LEFT' ||
           this.config.animationAction === 'SCROLL RIGHT') ) {
       this.resetAnimationConfig();
+      if (this.animationConfig.scroll.start === false) {
+          this.animationDescription = this.config.shortDescriptionOnToOff;
+      }
       this.animationConfig.scroll.start = true;
     }
   
@@ -329,7 +341,11 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
             this.config.animationAction === 'SCROLL LEFT' ||
             this.config.animationAction === 'SCROLL RIGHT') ) {
         this.resetAnimationConfig();
+        if (this.animationConfig.scroll.end === false) {
+            this.animationDescription = this.config.shortDescriptionOffToOn;
+        }
         this.animationConfig.scroll.end = true;
+
     }
 
     // FADE TOGGLE
@@ -339,6 +355,11 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
         const toggle = !this.animationConfig.fade.toggle;
         this.resetAnimationConfig();
         this.animationConfig.fade.toggle = toggle;
+        if (this.animationConfig.scroll.toggle === true) {
+          this.animationDescription = this.config.shortDescriptionOffToOn;
+        } else {
+          this.animationDescription = this.config.shortDescriptionOnToOff;
+        }
     }
 
     // FADE START
@@ -346,7 +367,11 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       && ( this.config.animationAction === 'FADE OUT' ||
             this.config.animationAction === 'FADE IN') ) {
         this.resetAnimationConfig();
+        if (this.animationConfig.fade.start === false) {
+            this.animationDescription = this.config.shortDescriptionOnToOff;
+        }
         this.animationConfig.fade.start = true;
+
     }
 
     // FADE END
@@ -354,6 +379,9 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       && ( this.config.animationAction === 'FADE OUT' ||
             this.config.animationAction === 'FADE IN') ) {
         this.resetAnimationConfig();
+        if (this.animationConfig.fade.end === false) {
+            this.animationDescription = this.config.shortDescriptionOffToOn;
+        }
         this.animationConfig.fade.end = true;
     }
 
@@ -363,19 +391,31 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
         const toggle = !this.animationConfig.rotate.toggle;
         this.resetAnimationConfig();
         this.animationConfig.rotate.toggle = toggle;
+        if (this.animationConfig.scroll.toggle === true) {
+          this.animationDescription = this.config.shortDescriptionOffToOn;
+        } else {
+          this.animationDescription = this.config.shortDescriptionOnToOff;
+        }
     }
 
     // ROTATE START
     if (type === this.config.animationActionOff
       && ( this.config.animationAction === 'ROTATE') ) {
         this.resetAnimationConfig();
+        if (this.animationConfig.rotate.start === false) {
+            this.animationDescription = this.config.shortDescriptionOnToOff;
+        }
         this.animationConfig.rotate.start = true;
+
     }
 
     // ROTATE END
     if (type === this.config.animationActionOn
       && ( this.config.animationAction === 'ROTATE') ) {
       this.resetAnimationConfig();
+      if (this.animationConfig.rotate.end === false) {
+          this.animationDescription = this.config.shortDescriptionOffToOn;
+      }
       this.animationConfig.rotate.end = true;
     }
   
@@ -385,6 +425,11 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
         const toggle = !this.animationConfig.swap.toggle;
         this.resetAnimationConfig();
         this.animationConfig.swap.toggle = toggle;
+        if (this.animationConfig.scroll.toggle === true) {
+          this.animationDescription = this.config.shortDescriptionOffToOn;
+        } else {
+          this.animationDescription = this.config.shortDescriptionOnToOff;
+        }
     }
 
     // SWAP START
@@ -392,6 +437,9 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       && ( this.config.animationAction === 'SWAP') ) {
         if (this.currentSwapImage === 'imageText2') {
           this.resetAnimationConfig();
+          if (this.animationConfig.swap.end === false) {
+              this.animationDescription = this.config.shortDescriptionOnToOff;
+          }
           this.animationConfig.swap.end = true;
         }
     }
@@ -401,6 +449,9 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       && ( this.config.animationAction === 'SWAP') ) {
         if (this.currentSwapImage === 'imageText') {
           this.resetAnimationConfig();
+          if (this.animationConfig.swap.end === false) {
+              this.animationDescription = this.config.shortDescriptionOffToOn;
+          }
           this.animationConfig.swap.end = true;
         }
     }
@@ -410,6 +461,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
         // Reset
         this.resetAnimationConfig();
         this.animationConfig.reset = true;
+        // this.animationDescription = '';
     }
 
     // ANIMATION CONFIGURATION
@@ -485,12 +537,36 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
           }
         }
 
+        if ('shortDescriptionOffToOn' in newConfigurationData) {
+            if (newConfigurationData.shortDescriptionOffToOn.length >= 0) {
+                this.config.shortDescriptionOffToOn = newConfigurationData.shortDescriptionOffToOn;
+            } else {
+                console.error(`config.shortDescriptionOffToOn must not be an empty string`);
+            }
+        }
+
         if ('animationActionOff' in newConfigurationData) {
           if (newConfigurationData.animationActionOff.length >= 0) {
             this.config.animationActionOff = newConfigurationData.animationActionOff;
           } else {
             console.error(`config.animationActionOff must not be an empty string`);
           }
+        }
+
+        if ('shortDescriptionOnToOff' in newConfigurationData) {
+            if (newConfigurationData.shortDescriptionOnToOff.length >= 0) {
+                this.config.shortDescriptionOnToOff = newConfigurationData.shortDescriptionOnToOff;
+            } else {
+                console.error(`config.shortDescriptionOnToOff must not be an empty string`);
+            }
+        }
+
+        if ('shortDescriptionLocation' in newConfigurationData) {
+            if (newConfigurationData.shortDescriptionLocation.length >= 0) {
+                this.config.shortDescriptionLocation = newConfigurationData.shortDescriptionLocation;
+            } else {
+                console.error(`config.shortDescriptionLocation must not be an empty string`);
+            }
         }
 
         if ('animationAction' in newConfigurationData) {
@@ -536,8 +612,20 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       const filteredEventsList = getEventsResponse.data.filter( e => (e.type === this.config.animationActionOn || e.type === this.config.animationActionOff));
       if (filteredEventsList.length > 0) {
         const latestEvent = filteredEventsList[0];
+        if (latestEvent.type === this.config.animationActionOn) {
+            this.animationDescription = this.config.shortDescriptionOffToOn;
+        } else {
+            this.animationDescription = this.config.shortDescriptionOnToOff;
+        }
         this.processEvent(latestEvent.type, latestEvent.text);
+
+      } else {
+          // set the animationDescription to the initial state if no previous event history exists
+          this.animationDescription = this.config.shortDescriptionOnToOff;
       }
+    } else {
+        // set the animationDescription to the initial state if no previous event history exists
+        this.animationDescription = this.config.shortDescriptionOnToOff;
     }
   }
 
@@ -555,7 +643,11 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
     }
 
     if (this.config.animationAction === 'SWAP' && this.currentSwapImageText === '') {
-      this.currentSwapImageText = _.get(this.config, 'imageText');
+      if (this.config.imageText) {
+        this.currentSwapImageText = _.get(this.config, 'imageText');
+      } else {
+        this.currentSwapImageText = '';
+      }
     }
   }
 
@@ -583,6 +675,33 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
         end: false
       }
     }
+
+    if (this.config && this.config.shortDescriptionOnToOff) {
+        this.animationDescription = this.config.shortDescriptionOnToOff;
+    } else {
+        this.animationDescription = '';
+    }
+  }
+
+  public onScrollUpComplete($event) {
+  }
+
+  public onScrollDownComplete($event) {
+  }
+
+  public onScrollLeftComplete($event) {
+  }
+
+  public onScrollRightComplete($event) {
+  }
+
+  public onFadeInComplete($event) {
+  }
+
+  public onFadeOutComplete($event) {
+  }
+
+  public onRotateComplete($event) {
   }
 
   public onSwapFadeOutComplete($event) {

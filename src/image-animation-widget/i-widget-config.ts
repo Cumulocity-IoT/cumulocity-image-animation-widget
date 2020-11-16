@@ -30,4 +30,7 @@ export interface WidgetConfig {
     rotationInDegrees: number;
     animationActionOn: string;
     animationActionOff: string;
+    shortDescriptionOffToOn: string;
+    shortDescriptionOnToOff: string;
+    shortDescriptionLocation: 'ABOVE' | 'BELOW';
 }

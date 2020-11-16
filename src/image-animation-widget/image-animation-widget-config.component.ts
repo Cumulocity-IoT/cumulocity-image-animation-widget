@@ -59,13 +59,30 @@ import _ from 'lodash';
           </ng-container>
 
           <c8y-form-group>
-            <label for="animationActionOn">Event type to animate off to on</label>
-            <input type="string" class="form-control" id="animationActionOn" name="animationActionOn" style="width:100%" placeholder="Enter the event type to animate from off to on" [(ngModel)]="config.animationActionOn" required>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label for="animationActionOn">Event type to animate off to on</label>
+                    <input type="string" class="form-control" id="animationActionOn" name="animationActionOn" placeholder="Enter the event type to animate from off to on" [(ngModel)]="config.animationActionOn" required>
+                </div>
+                <div class="col-lg-6">
+                    <label for="shortDescriptionOffToOn">Short description when animating off to on</label>
+                    <input type="text" class="form-control" id="shortDescriptionOffToOn" name="shortDescriptionOffToOn" placeholder="Describe the animation" [(ngModel)]="config.shortDescriptionOffToOn">
+                </div>
+            </div>            
           </c8y-form-group>
 
           <c8y-form-group>
-            <label for="animationActionOff">Event type to animate on to off</label>
-            <input type="string" class="form-control" id="animationActionOff" name="animationActionOff" style="width:100%" placeholder="Enter the event type to animate from off to on" [(ngModel)]="config.animationActionOff" required>
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="animationActionOff">Event type to animate on to off</label>
+                <input type="string" class="form-control" id="animationActionOff" name="animationActionOff" style="width:100%" placeholder="Enter the event type to animate from off to on" [(ngModel)]="config.animationActionOff" required>
+              </div>
+              <div class="col-lg-6">
+                <label for="shortDescriptionOnToOff">Short description when animating on to off</label>
+                <input type="text" class="form-control" id="shortDescriptionOnToOff" name="shortDescriptionOnToOff" placeholder="Describe the animation" [(ngModel)]="config.shortDescriptionOnToOff">
+              </div>                
+            </div>
+            
           </c8y-form-group>
           
           <c8y-form-group>
@@ -97,6 +114,18 @@ import _ from 'lodash';
             <input type="number" class="form-control" id="animationTimeInSeconds" name="animationTimeInSeconds" style="width:100%" placeholder="Set the amount of time taken to complete the animation" [ngModel]="config.animationTimeInSeconds" min="0" max="3600" (change)="setAnimationTimeInSeconds($event)" required>
           </c8y-form-group>
 
+          <c8y-form-group>
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="descriptionLocation">Location of the short description</label>
+                <select class="form-control" name="descriptionLocation" id="descriptionLocation" [(ngModel)]="config.shortDescriptionLocation">
+                  <option value="ABOVE">Above the image</option>
+                  <option value="BELOW">Below the image</option>
+                </select>
+              </div>
+            </div>
+          </c8y-form-group>
+
         </div>
       `
 })
@@ -114,7 +143,10 @@ export class ImageAnimationWidgetConfig {
       animationAction: 'SCROLL UP',
       rotationInDegrees: 0,
       animationActionOn : '',
-      animationActionOff: ''
+      animationActionOff: '',
+      shortDescriptionOffToOn: '',
+      shortDescriptionOnToOff: '',
+      shortDescriptionLocation: 'ABOVE'
     };
 
     public onImageFileUpdated ($event: Event ) {
