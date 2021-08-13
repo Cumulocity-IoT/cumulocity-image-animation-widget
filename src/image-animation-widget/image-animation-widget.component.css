@@ -1,3 +1,9 @@
+.widget-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #ffffff;
+}
+
 .image-outer-container {
     display: flex;
     height: 80%;
@@ -11,7 +17,7 @@
 
 .short-description {
     text-align: center;
-    height: 25px;
+    min-height: 25px;
 }
 
 .short-description-above {
@@ -21,8 +27,4 @@
 
 .short-description-below {
     margin-top: 5px;
-}
-
-.no-margin {
-    margin: 0px;
 }

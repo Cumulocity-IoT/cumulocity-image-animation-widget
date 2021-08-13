@@ -19,7 +19,7 @@ import { Component, Input, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { WidgetConfig } from './i-widget-config';
 import { ICumulocityEvent } from './i-cumulocity-event'
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Realtime, EventService } from '@c8y/ngx-components/api';
 import { AnimationConfig } from './i-animation-config';
 
