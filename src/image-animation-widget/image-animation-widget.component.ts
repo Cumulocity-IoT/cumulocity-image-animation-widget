@@ -243,20 +243,17 @@ const isBase64 = require('is-base64');
     trigger('swap', [
       state('swapStart',
         style({
-          position: 'relative',
-          opacity: 1
+          position: 'relative'
         })
       ),
       state('swapEnd', 
         style({
-          position: 'relative',
-          opacity: 0
+          position: 'relative'
         })
       ),
       state('swapReset',
         style({
-          position: 'relative',
-          opacity: 1
+          position: 'relative'
         })
       ),
       transition('swapStart=>swapEnd', [
@@ -279,7 +276,6 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
   public animationConfig: AnimationConfig;
 
   private realtimeEventsSubscription;
-  private currentSwapImage = 'imageText';
   public currentSwapImageText = '';
 
   public animationDescription = '';
@@ -435,25 +431,23 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
     // SWAP START
     if (type === this.config.animationActionOff
       && ( this.config.animationAction === 'SWAP') ) {
-        if (this.currentSwapImage === 'imageText2') {
-          this.resetAnimationConfig();
-          if (this.animationConfig.swap.end === false) {
-              this.animationDescription = this.config.shortDescriptionOnToOff;
-          }
-          this.animationConfig.swap.end = true;
+        this.resetAnimationConfig();
+        if (this.animationConfig.swap.start === false) {
+          this.animationDescription = this.config.shortDescriptionOnToOff;
+          this.currentSwapImageText = _.get(this.config, 'imageText2');  
         }
+        this.animationConfig.swap.end = true;
     }
 
     // SWAP END
     if (type === this.config.animationActionOn
       && ( this.config.animationAction === 'SWAP') ) {
-        if (this.currentSwapImage === 'imageText') {
           this.resetAnimationConfig();
-          if (this.animationConfig.swap.end === false) {
-              this.animationDescription = this.config.shortDescriptionOffToOn;
-          }
-          this.animationConfig.swap.end = true;
-        }
+      if (this.animationConfig.swap.end === false) {
+        this.animationDescription = this.config.shortDescriptionOffToOn;
+        this.currentSwapImageText = _.get(this.config, 'imageText');
+      }
+      this.animationConfig.swap.end = true;
     }
 
     // RESET
@@ -593,7 +587,6 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
   }
 
   private async setWidgetInitialState() {
-
     // Get the events ordered by creation date DESC
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 0);
@@ -622,10 +615,16 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
       } else {
           // set the animationDescription to the initial state if no previous event history exists
           this.animationDescription = this.config.shortDescriptionOnToOff;
+          if(this.config.animationAction === 'SWAP') {
+            this.currentSwapImageText = this.config.imageText2;
+          }
       }
     } else {
         // set the animationDescription to the initial state if no previous event history exists
         this.animationDescription = this.config.shortDescriptionOnToOff;
+        if(this.config.animationAction === 'SWAP') {
+          this.currentSwapImageText = this.config.imageText2;
+        }
     }
   }
 
@@ -640,14 +639,6 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
 
     if (this.config.animationAction === 'FADE OUT' || this.config.animationAction === 'FADE IN') {
       this.calculatedRemainingImage = this.config.remainingImagePercentage > 0 ? this.config.remainingImagePercentage / 100 : 0;
-    }
-
-    if (this.config.animationAction === 'SWAP' && this.currentSwapImageText === '') {
-      if (this.config.imageText) {
-        this.currentSwapImageText = _.get(this.config, 'imageText');
-      } else {
-        this.currentSwapImageText = '';
-      }
     }
   }
 
@@ -675,12 +666,6 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
         end: false
       }
     }
-
-    if (this.config && this.config.shortDescriptionOnToOff) {
-        this.animationDescription = this.config.shortDescriptionOnToOff;
-    } else {
-        this.animationDescription = '';
-    }
   }
 
   public onScrollUpComplete($event) {
@@ -705,20 +690,7 @@ export class ImageAnimationWidget implements DoCheck, OnDestroy, OnInit {
   }
 
   public onSwapFadeOutComplete($event) {
-    if (this.animationConfig.swap.toggle || this.animationConfig.swap.end || this.animationConfig.reset) {
-      this.getSwapImage();
-      this.resetAnimationConfig();
-    }
-  }
-  
-  public getSwapImage(): void {
-    if (this.currentSwapImage === 'imageText') {
-      this.currentSwapImageText = _.get(this.config, 'imageText2');
-      this.currentSwapImage = 'imageText2';
-    } else {
-      this.currentSwapImageText = _.get(this.config, 'imageText');
-      this.currentSwapImage = 'imageText';
-    }
+
   }
 
   public getImage(): string {
