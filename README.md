@@ -26,7 +26,7 @@
 
 ### Runtime Widget Deployment?
 
-* This widget supports runtime deployment. Download the [Runtime Binary](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/1.0.0/image-animation-widget.zip) and follow runtime deployment instructions from [here](https://github.com/SoftwareAG/cumulocity-runtime-widget-loader).
+* This widget supports runtime deployment. Download the [Runtime Binary](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/1.0.0/image-animation-widget.zip) and use application builder to install your runtime widget.
 
 ## Userguide
 This guide will teach you how to add the widget in your existing or new dashboard.
