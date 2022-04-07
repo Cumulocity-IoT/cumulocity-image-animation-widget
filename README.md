@@ -1,4 +1,4 @@
-﻿# Cumulocity IoT Image Animation widget[<img width="35" src="https://user-images.githubusercontent.com/67993842/97668428-f360cc80-1aa7-11eb-8801-da578bda4334.png"/>](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/1.0.0/image-animation-widget.zip)
+﻿# Cumulocity IoT Image Animation widget[<img width="35" src="https://user-images.githubusercontent.com/67993842/97668428-f360cc80-1aa7-11eb-8801-da578bda4334.png"/>](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/v1.0.4/image-animation-widget-1.0.4.zip)
 
 
 ![Swap animation example](./example-gifs/swap-example.gif)
@@ -26,7 +26,7 @@
 
 ### Runtime Widget Deployment?
 
-* This widget supports runtime deployment. Download the [Runtime Binary](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/1.0.0/image-animation-widget.zip) and use application builder to install your runtime widget.
+* This widget supports runtime deployment. Download the [Runtime Binary](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/v1.0.4/image-animation-widget-1.0.4.zip) and use application builder to install your runtime widget.
 
 ## Userguide
 This guide will teach you how to add the widget in your existing or new dashboard.
