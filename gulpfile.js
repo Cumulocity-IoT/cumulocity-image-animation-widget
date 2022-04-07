@@ -40,7 +40,7 @@ const bundle = series(
         return src('./dist/widget/**/*')
             // Filter out the webpackRuntime chunk, we only need the widget code chunks
             .pipe(filter(file => !/^[a-f0-9]{20}\.js(\.map)?$/.test(file.relative)))
-            .pipe(zip('image-animation-widget.zip'))
+            .pipe(zip('image-animation-widget-1.0.4.zip'))
             .pipe(dest('dist/'))
     }
 )
