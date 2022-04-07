@@ -4,7 +4,7 @@
     "dist\\bundle-src\\custom-widget.js": "image-animation-widget-CustomWidget",
     "dist/bundle-src/custom-widget.js": "image-animation-widget-CustomWidget"
   },
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Image animation widget to scroll an image Up, Down, Left or Right, Fade in, Fade out, Rotate and Swap (written by Software AG Global Presales)",
   "main": "index.js",
   "scripts": {
