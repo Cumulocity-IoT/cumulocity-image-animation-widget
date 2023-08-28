@@ -1,5 +1,7 @@
 ﻿# Cumulocity IoT Image Animation widget[<img width="35" src="https://user-images.githubusercontent.com/67993842/97668428-f360cc80-1aa7-11eb-8801-da578bda4334.png"/>](https://github.com/SoftwareAG/cumulocity-image-animation-widget/releases/download/v1.0.4/image-animation-widget-1.0.4.zip)
 
+### ⚠️ This project is no longer under development. Please use [cumulocity-image-animation-widget-plugin](https://github.com/SoftwareAG/cumulocity-image-animation-widget-plugin) for Application Builder >=2.x.x and Cumulocity >=1016.x.x⚠️
+
 The Cumulocity Image Animation widget supports scrolling an image up, down, left or right, fading in, fading out, rotating an image and swapping from one image to another. 
 
 ![Swap animation example](./example-gifs/swap-example.gif)
